@@ -33,6 +33,17 @@ public class EditModel : PageModel
         Book = book;
 
         ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+        ViewData["AuthorID"] = new SelectList(
+    _context.Set<Author>()
+        .AsEnumerable()
+        .Select(a => new {
+            a.ID,
+            FullName = a.FirstName + " " + a.LastName
+        }),
+    "ID",
+    "FullName",
+    Book.AuthorID
+);
         return Page();
     }
 
@@ -42,6 +53,25 @@ public class EditModel : PageModel
     {
         if (!ModelState.IsValid)
         {
+            ViewData["PublisherID"] = new SelectList(
+                _context.Set<Publisher>(),
+                "ID",
+                "PublisherName",
+                Book.PublisherID
+            );
+
+            ViewData["AuthorID"] = new SelectList(
+                _context.Set<Author>()
+                    .AsEnumerable()
+                    .Select(a => new {
+                        a.ID,
+                        FullName = a.FirstName + " " + a.LastName
+                    }),
+                "ID",
+                "FullName",
+                Book.AuthorID
+            );
+
             return Page();
         }
 
