@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Duszko_Maria_Lab2.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Duszko_Maria_Lab2.Pages.BookPages;
+namespace Duszko_Maria_Lab2.Pages.CategoryPages;
 
 public class CreateModel : PageModel
 {
@@ -17,22 +16,11 @@ public class CreateModel : PageModel
 
     public IActionResult OnGet()
     {
-        ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
-        ViewData["AuthorID"] = new SelectList(
-    _context.Set<Author>()
-        .AsEnumerable()
-        .Select(a => new {
-            a.ID,
-            FullName = a.FirstName + " " + a.LastName
-        }),
-    "ID",
-    "FullName"
-);
         return Page();
     }
 
     [BindProperty]
-    public Book Book { get; set; } = default!;
+    public Category Category { get; set; } = default!;
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()
@@ -42,7 +30,7 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        _context.Book.Add(Book);
+        _context.Category.Add(Category);
         await _context.SaveChangesAsync();
 
         return RedirectToPage("./Index");
