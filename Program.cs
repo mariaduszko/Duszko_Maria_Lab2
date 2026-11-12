@@ -1,8 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Duszko_Maria_Lab2.Data;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Duszko_Maria_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Duszko_Maria_Lab2Context' not found.");
 
 builder.Services.AddDbContext<Duszko_Maria_Lab2Context>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<LibraryIdentityContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Duszko_Maria_Lab2Context")));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<LibraryIdentityContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
